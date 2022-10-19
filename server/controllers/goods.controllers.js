@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import GoodsMessage from "../models/goodsMessages.js"
+import GoodsMessage from "../models/Product.js"
 //!GET GOODS
 export const getGoods = async (req, res) => {
     try {
