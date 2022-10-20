@@ -1,67 +1,82 @@
- //import bcrypt from "bcryptjs";
- //import jwt from "jsonwebtoken";
- import User from "../models/user.js";
-//
-// const secret = "test";
-// export const signIn = async (req, res) => {
-//     const {email, password} = req.body;
-//
-//     try {
-//         const oldUser = await UserModal.findOne({email});
-//
-//         if (!oldUser) return res.status(404).json({message: "User doesn't exist"});
-//
-//         const isPasswordCorrect = await bcrypt.compare(password, oldUser.password);
-//
-//         if (!isPasswordCorrect) return res.status(400).json({message: "Invalid credentials"});
-//
-//         const token = jwt.sign({email: oldUser.email, id: oldUser._id}, secret, {expiresIn: "30d"});
-//
-//         res.status(200).json({result: oldUser, token});
-//     } catch (err) {
-//         res.status(500).json({message: "Something went wrong"});
-//     }
-// };
-// export const signUp = async (req, res) => {
-//     const {email, password, firstName, lastName} = req.body;
-//
-//     try {
-//         const oldUser = await User.findOne({email});
-//
-//         if (oldUser) return res.status(400).json({message: "User already exists"});
-//
-//         const hashedPassword = await bcrypt.hash(password, 12);
-//
-//         const result = await User.create({
-//             email,
-//             password: hashedPassword,
-//             name: `${firstName} ${lastName}`
-//         });
-//
-//         const token = jwt.sign({email: result.email, id: result._id}, secret, {expiresIn: "30d"});
-//
-//         res.status(201).json({result, token});
-//     } catch (error) {
-//         res.status(500).json({message: "Something went wrong"});
-//
-//         console.log(error);
-//     }
-// };
-//
+import jwt from "jsonwebtoken";
+import User from "../models/user.js";
+import CryptoJS from "crypto-js";
+
+//!SIGNIN
+export const signIn = async (req, res) => {
+    try {
+        const user = await User.findOne(
+            {
+                username: req.body.username
+            }
+        );
+
+        !user && res.status(401).json("Wrong User Name");
+
+        const hashedPassword = CryptoJS.AES.decrypt(
+            user.password,
+            process.env.PASS_SEC
+        );
 
 
- export const signUp = async (req, res) => {
-     const newUser = new User({
-         username: req.body.username,
-         email: req.body.username,
-         password: req.body.password
-     });
-     try {
-         const savedUser = await newUser.save();
-         res.status(201).json(savedUser)
-     } catch (err) {
-         res.status(500).json(err)
-     }
+        const originalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
 
- }
+        const inputPassword = req.body.password;
 
+        originalPassword != inputPassword &&
+        res.status(401).json("Wrong Password");
+
+        const accessToken = jwt.sign(
+            {
+                id: user._id,
+                isAdmin: user.isAdmin,
+            },
+            process.env.JWT_SEC,
+            {expiresIn: "3d"}
+        );
+
+        const {password, ...others} = user._doc;
+        res.status(200).json({...others, accessToken});
+
+    } catch (err) {
+        res.status(500).json(err);
+    }
+
+}
+//!SIGNUP
+export const signUp = async (req, res) => {
+    const newUser = new User({
+        username: req.body.username,
+        email: req.body.email,
+        password: CryptoJS.AES.encrypt(req.body.password, process.env.PASS_SEC).toString()
+    });
+    try {
+        const savedUser = await newUser.save();
+        res.status(201).json(savedUser)
+    } catch (err) {
+        res.status(500).json(err)
+    }
+
+}
+//!UPDATE
+export const updatedUser = async (req, res) => {
+    if (req.body.password) {
+        req.body.password = CryptoJS.AES.encrypt(
+            req.body.password,
+            process.env.PASS_SEC
+        ).toString();
+    }
+
+    try {
+        const updatedUser = await User.findByIdAndUpdate(
+            req.params.id,
+            {
+                $set: req.body,
+            },
+            {new: true}
+        );
+        res.status(200).json(updatedUser);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+}

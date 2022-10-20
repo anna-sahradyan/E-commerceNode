@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-import GoodsMessage from "../models/Product.js"
+import Product from "../models/Product.js"
 //!GET GOODS
 export const getGoods = async (req, res) => {
     try {
-        const goodsMessages = await GoodsMessage.find();
+        const goodsMessages = await Product.find();
         res.status(200).json(goodsMessages);
     } catch (err) {
 
@@ -11,3 +11,5 @@ export const getGoods = async (req, res) => {
     }
 
 }
+//!UPDATE Product
+

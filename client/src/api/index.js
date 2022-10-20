@@ -7,5 +7,6 @@ API.interceptors.request.use((req) => {
     }
     return req;
 });
+export const updatedUser = (id, updatedUser) => API.patch(`/user/${id}`, updatedUser);
 export const signIn = (formData) => API.post("/user/signin", formData);
 export const signUp = (formData) => API.post("/user/signup", formData);
