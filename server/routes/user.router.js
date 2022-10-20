@@ -1,9 +1,25 @@
 import express from "express";
-import {signIn, signUp, updatedUser} from "../controllers/user.controllers.js";
+import {
+    deleteUser,
+    getAllUser,
+    getUser,
+    signIn,
+    signUp,
+    updatedUser,
+    getStats
+} from "../controllers/user.controllers.js";
 
-import  {verifyTokenAndAuthorization}  from  "../middleware/auth.middleware.js";
+import {verifyTokenAndAdmin, verifyTokenAndAuthorization} from "../middleware/auth.middleware.js";
+
 const router = express.Router();
-router.post("/signin", signIn);
-router.post("/signup",signUp);
-router.patch("/:id",verifyTokenAndAuthorization,updatedUser);
+
+router.patch(`/:id`, verifyTokenAndAuthorization, updatedUser);
+router.delete(`/:id`,verifyTokenAndAuthorization,deleteUser);
+router.get(`/find/:id`,verifyTokenAndAdmin,getUser);
+router.get(`/`,verifyTokenAndAdmin,getAllUser);
+router.get(`/stats`,verifyTokenAndAdmin,getStats);
+
+
+router.post(`/signIn`, signIn);
+router.post(`/signUp`, signUp);
 export default router;

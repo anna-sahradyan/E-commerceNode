@@ -7,6 +7,10 @@ API.interceptors.request.use((req) => {
     }
     return req;
 });
-export const updatedUser = (id, updatedUser) => API.patch(`/user/${id}`, updatedUser);
-export const signIn = (formData) => API.post("/user/signin", formData);
-export const signUp = (formData) => API.post("/user/signup", formData);
+export const updatedUser= (id, updatedUser) => API.patch(`/users/${id}`, updatedUser);
+export const fetchUser = (id) => API.get(`/users/${id}`);
+export const fetchUsers = (user) => API.get(`/users?user=${user}`);
+export const getStats = (stats) => API.get(`/users/stats`,stats);
+export const deleteUser = (id) => API.delete(`/users/${id}`);
+export const signIn = (formData) => API.post(`/users/signin`, formData);
+export const signUp = (formData) => API.post(`/users/signup`, formData);
