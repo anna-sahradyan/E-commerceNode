@@ -17,3 +17,7 @@ export const signIn = (formData) => API.post(`/users/signin`, formData);
 export const signUp = (formData) => API.post(`/users/signup`, formData);
 //!PRODUCT
 export const createProduct = (product) => API.post(`/products`, product);
+export const deleteProduct = (id) => API.delete(`/products/${id}`);
+export const addProduct = (id) => API.post(`/products/${id}`);
+export const updatedProduct = (id, updatedProduct) => API.patch(`/products/${id}`, updatedProduct);
+export const getAllProducts = (product) => API.get(`/products?product=${product}`);
