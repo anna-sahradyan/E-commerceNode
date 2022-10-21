@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import User from "../models/user.js";
 import CryptoJS from "crypto-js";
 
-//!SIGNIN
+//!SIGNIN(login)
 export const signIn = async (req, res) => {
     try {
         const user = await User.findOne(
@@ -43,7 +43,7 @@ export const signIn = async (req, res) => {
     }
 
 }
-//!SIGNUP
+//!SIGNUP(register)
 export const signUp = async (req, res) => {
     const newUser = new User({
         username: req.body.username,
@@ -103,11 +103,11 @@ export const getUser = async (req, res) => {
 
 }
 //!GET ALL USER
-export const getAllUser = async (req, res) => {
+export const getAllUsers = async (req, res) => {
     const query = req.query.new;
     try {
         const users = query
-            ? await User.find().sort({ _id: -1 }).limit(5)
+            ? await User.find().sort({_id: -1}).limit(3)
             : await User.find();
         res.status(200).json(users);
     } catch (err) {
@@ -115,27 +115,28 @@ export const getAllUser = async (req, res) => {
     }
 }
 
+
 //!GET USER STATS
 export const getStats = async (req, res) => {
     const date = new Date();
     const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
-    try{
+    try {
         const data = await User.aggregate([
-            { $match: { createdAt: { $gte: lastYear } } },
+            {$match: {createdAt: {$gte: lastYear}}},
             {
                 $project: {
-                    month: { $month: "$createdAt" },
+                    month: {$month: "$createdAt"},
                 },
             },
             {
                 $group: {
                     _id: "$month",
-                    total: { $sum: 1 },
+                    total: {$sum: 1},
                 },
             },
         ]);
         res.status(200).json(data)
-    }catch(err){
+    } catch (err) {
         res.status(500).json(err);
     }
 }

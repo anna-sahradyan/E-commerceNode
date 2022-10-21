@@ -1,15 +1,36 @@
-import mongoose from "mongoose";
-import Product from "../models/Product.js"
-//!GET GOODS
-export const getGoods = async (req, res) => {
+import Product from "../models/Product.js";
+//!CREATE
+export const createProduct = async (req, res) => {
+    const newProduct = new Product(req.body);
+
     try {
-        const goodsMessages = await Product.find();
-        res.status(200).json(goodsMessages);
+        const savedProduct = await newProduct.save();
+        res.status(200).json(savedProduct);
     } catch (err) {
-
-        console.log(err)
+        res.status(500).json(err);
     }
-
 }
-//!UPDATE Product
-
+//!UPDATE
+export const updateProduct = async (req, res) => {
+    try {
+        const updatedProduct = await Product.findByIdAndUpdate(
+            req.params.id,
+            {
+                $set: req.body,
+            },
+            {new: true}
+        );
+        res.status(200).json(updatedProduct);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+}
+//!DELETE
+export const deleteProduct = async (req, res) => {
+    try {
+        await Product.findByIdAndUpdate(req.params.id);
+        res.status(200).json("Product has been deleted ...");
+    } catch (err) {
+        res.status(500).json(err);
+    }
+}

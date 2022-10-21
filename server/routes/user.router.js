@@ -1,7 +1,7 @@
 import express from "express";
 import {
     deleteUser,
-    getAllUser,
+    getAllUsers,
     getUser,
     signIn,
     signUp,
@@ -16,7 +16,7 @@ const router = express.Router();
 router.patch(`/:id`, verifyTokenAndAuthorization, updatedUser);
 router.delete(`/:id`,verifyTokenAndAuthorization,deleteUser);
 router.get(`/find/:id`,verifyTokenAndAdmin,getUser);
-router.get(`/`,verifyTokenAndAdmin,getAllUser);
+router.get(`/`,verifyTokenAndAdmin,getAllUsers);
 router.get(`/stats`,verifyTokenAndAdmin,getStats);
 
 

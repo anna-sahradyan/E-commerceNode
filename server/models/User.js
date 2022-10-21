@@ -8,6 +8,6 @@ const userSchema = mongoose.Schema({
         type:Boolean,
         default:false
     }
-},{timesStamp:true});
+}, { timestamps: true });
 
 export default mongoose.model("User", userSchema);
