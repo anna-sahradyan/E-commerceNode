@@ -21,3 +21,9 @@ export const deleteProduct = (id) => API.delete(`/products/${id}`);
 export const addProduct = (id) => API.post(`/products/${id}`);
 export const updatedProduct = (id, updatedProduct) => API.patch(`/products/${id}`, updatedProduct);
 export const getAllProducts = (product) => API.get(`/products?product=${product}`);
+//!ORDERS
+export const creatOrders = (product) => API.post(`/orders`, product);
+export const deleteOrders = (id) => API.delete(`/orders/${id}`);
+export const addOrders = (id) => API.post(`/orders/${id}`);
+export const updateOrders = (id, updatedProduct) => API.patch(`/orders/${id}`, updatedProduct);
+export const getAllOrders = (product) => API.get(`/orders?order=${product}`);
