@@ -1,7 +1,7 @@
 import stripe from "stripe";
  stripe = process.env.STRIPE_KEY;
-export const stripeCharges = async (req, res) => {
-    await stripe.charges.create({
+export const stripeCharges =  (req, res) => {
+   stripe.charges.create({
         source: req.body.tokenId,
         amount: req.body.amount,
         currency: "usd"
