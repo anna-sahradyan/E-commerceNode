@@ -1,5 +1,6 @@
 import Order from "../models/Order.js";
 
+
 //!CREATE
 export const createOrder = async (req, res) => {
     const newCart = new Order(req.body);
@@ -38,7 +39,7 @@ export const deleteOrder = async (req, res) => {
 //!GET USER  ORDERS
 export const getOrder = async (req, res) => {
     try {
-        const orders = await Order.find({userId:req.params.userId});
+        const orders = await Order.find({userId: req.params.userId});
         res.status(200).json(orders);
     } catch (err) {
         res.status(500).json(err);
@@ -54,4 +55,31 @@ export const getAllOrders = async (req, res) => {
     } catch (err) {
         res.status(500).json(err);
     }
+}
+//!GET MONTHLY INCOME
+export const getIncome = async (req, res) => {
+    const date = new Date();
+    const lastMonth = new Date(date.setMonth(date.getMonth() - 1));
+    const previousMonth = new Date(new Date().setMonth(lastMonth.getMonth() - 1));
+    try {
+        const income = await Order.aggregate([
+            { $match: { createdAt: { $gte: previousMonth } } },
+            {
+                $project: {
+                    month: { $month: "$createdAt" },
+                    sales: "$amount",
+                },
+            },
+            {
+                $group: {
+                    _id: "$month",
+                    total: { $sum: "$sales" },
+                },
+            },
+        ]);
+        res.status(200).json(income);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+
 }
