@@ -7,7 +7,7 @@ import productRoutes from "./routes/product.router.js";
 import userRoutes from "./routes/user.router.js";
 import cartRoutes from "./routes/cart.router.js";
 import orderRoutes from "./routes/order.router.js";
-import stripeRoutes from "./routes/stripe.router.js";
+import stripeRouter from "./routes/stripe.router.js";
 
 const app = express();
 
@@ -16,13 +16,15 @@ app.use(cors());
 
 
 const PORT = process.env.PORT || 4000;
+
 app.use(bodyParser.json({limit: "30mb", extended: true}));
 app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
 app.use("/products", productRoutes);
 app.use("/users", userRoutes);
 app.use("/carts", cartRoutes);
 app.use("/orders", orderRoutes);
-app.use("/stripe", stripeRoutes);
+app.use("/checkout", stripeRouter);
+app.use(bodyParser.text());
 mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
