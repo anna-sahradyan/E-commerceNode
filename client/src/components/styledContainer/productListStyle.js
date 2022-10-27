@@ -28,7 +28,7 @@ export const Select = styled.select`
 `;
 
 export const Option = styled.option`
-  background-color: #${props => props.color};
+  // background-color: #${props => props.color};
 
 `;
 export const CheckBox = styled.span`

@@ -74,18 +74,28 @@ export const categories = [
     {
         id: 1,
         img:"https://images.pexels.com/photos/5886041/pexels-photo-5886041.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-        title:"SUMMER SALE"
+        title:"SUMMER SALE",
+        cat:"women"
     },
     {
         id: 2,
     img:"https://images.pexels.com/photos/2983464/pexels-photo-2983464.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    title:"LOUNGEWEAR LOVE"
+    title:"LOUNGEWEAR LOVE",
+        cat:"women"
 },
     {
 id: 3,
-    img:"https://images.pexels.com/photos/5480696/pexels-photo-5480696.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=434",
-    title:"LIGHT JACKETS"
+    img:"https://d3o2e4jr3mxnm3.cloudfront.net/Mens-Jake-Guitar-Vintage-Crusher-Tee_68382_1_lg.png",
+    title:"T Shirt",
+        cat:"men"
 },
+    {
+        id: 4,
+        img:"https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-12-pro-family-hero?wid=940&amp;hei=1112&amp;fmt=jpeg&amp;qlt=80&amp;.v=1604021663000",
+        title:"Iphone",
+        cat:"phone"
+    },
+
 
 ];
 export const popularProducts = [

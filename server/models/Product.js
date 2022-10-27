@@ -6,14 +6,14 @@ const ProductSchema = new mongoose.Schema(
         desc: {type: String, required: true,},
         img: {type: String, required: true},
         categories: {type: Array},
-        size: {type: String},
-        color: {type: String},
+        size: {type: Array},
+        color: {type: Array},
         price: {type: Number, required: true},
+            inStock:{type:Boolean,default:true}
 
     },
     {timestamps: true}
 );
 
 
-
-export default mongoose.models['Product'] || mongoose.model("Product",ProductSchema);
+export default mongoose.models['Product'] || mongoose.model("Product", ProductSchema);
