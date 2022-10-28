@@ -1,6 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-    Container, Filter, FilterContainer, FilterText, Select, Option, Title, CheckBox, CheckBoxColor
+    Container,
+    Filter,
+    FilterContainer,
+    FilterText,
+    Option,
+    Select,
+    Title
 } from "../components/styledContainer/productListStyle";
 import Nav from "../components/Nav";
 import Announcement from "../components/Announcement";
@@ -23,20 +29,21 @@ const ProductList = () => {
             [e.target.name]: value,
         })
     }
+
     return (<>
         <Container>
             <Nav/>
             <Announcement/>
-            <Title>Dresses</Title>
+            <Title>{cat}</Title>
             <FilterContainer>
                 <Filter><FilterText>Filter Products:</FilterText>
                     <Select name={"color"} onChange={handleFilters}>
                         <Option disabled value={""}>Color</Option>
-                        <Option>white</Option>
-                        <Option>black</Option>
-                        <Option>red</Option>
-                        <Option>blue</Option>
-                        <Option>yellow</Option>
+                        <Option>White</Option>
+                        <Option>Black</Option>
+                        <Option>Red</Option>
+                        <Option>Blue</Option>
+                        <Option>Yellow</Option>
                     </Select>
                     <Select name={"size"} onChange={handleFilters}>
                         <Option disabled selected>Size</Option>
