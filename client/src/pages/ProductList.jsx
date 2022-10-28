@@ -16,6 +16,7 @@ import Footer from "../components/Footer";
 import {useLocation} from "react-router-dom";
 
 
+
 const ProductList = () => {
     const location = useLocation();
     const cat = location.pathname.split("/")[2];
