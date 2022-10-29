@@ -26,7 +26,7 @@ import Footer from "../components/Footer";
 import {Add, Remove} from "@material-ui/icons";
 import {useLocation} from "react-router-dom";
 import {publicRequest} from "../api/apiRequest";
-import axios from "axios";
+//import axios from "axios";
 //import * as api from "../api/index";
 
 const Product = () => {
