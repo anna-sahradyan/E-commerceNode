@@ -26,6 +26,8 @@ import Footer from "../components/Footer";
 import {Add, Remove} from "@material-ui/icons";
 import {useLocation} from "react-router-dom";
 import {publicRequest} from "../api/apiRequest";
+import {useDispatch} from "react-redux";
+import {addProduct} from "../store/cartSlice";
 //import axios from "axios";
 //import * as api from "../api/index";
 
@@ -35,7 +37,8 @@ const Product = () => {
     const [product, setProduct] = useState({});
     const [color, setColor] = useState("");
     const [size, setSize] = useState("");
-    const [quantity, setQuantity] = useState(1)
+    const [quantity, setQuantity] = useState(1);
+    const dispatch = useDispatch();
     //!useEffect zone
     useEffect(() => {
         const getProduct = async () => {
@@ -57,7 +60,7 @@ const Product = () => {
         }
     }
     const handleClick = () => {
-
+        dispatch(addProduct({product,quantity}))
     }
     return (<>
 

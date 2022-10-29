@@ -6,12 +6,13 @@ import Product from "./pages/Product";
 import Cart from "./pages/Cart";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-
+import 'react-toastify/dist/ReactToastify.css';
+import {ToastContainer} from "react-toastify";
 const App = () => {
     const user = true;
     return (
         <>
-
+            <ToastContainer />
             <Routes>
                 <Route path={"/"} element={<Home/>}/>
                 <Route path={"/products/:category"} element={<ProductList/>}/>
