@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Nav from "../components/Nav";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
@@ -33,8 +33,19 @@ import {
     Button
 } from "../components/styledContainer/cartStyle";
 import {Add, Remove} from "@mui/icons-material";
+import {useSelector} from "react-redux";
+import StripeCheckout from "react-stripe-checkout";
+
+const KEY = process.env.REACT_APP_STRIPE;
 
 const Cart = () => {
+    const cart = useSelector(state => state.cart);
+    const [stripeToken, setStripeToken] = useState(null);
+    const onToken = (token) => {
+        setStripeToken(token);
+        console.log(token)
+    }
+
     return (<>
         <Container>
             <Nav/>
@@ -42,90 +53,77 @@ const Cart = () => {
             <Wrapper>
                 <Title>YOUR BAG</Title>
                 <Top>
-                    <TopButton> CONTINUE SHOPPING</TopButton>
+                    <TopButton>CONTINUE SHOPPING</TopButton>
                     <TopTexts>
-                        <TopText>SHOPPING BAG(2)</TopText>
-                        <TopText>YOUR WISHLIST(0)</TopText>
+                        <TopText>Shopping Bag(2)</TopText>
+                        <TopText>Your Wishlist (0)</TopText>
                     </TopTexts>
-                    <TopButton type={'filled'}>CHECKOUT NOW</TopButton>
+                    <TopButton type="filled">CHECKOUT NOW</TopButton>
                 </Top>
-
                 <Bottom>
                     <Info>
-                        <Product>
-                            <ProductDetail>
-                                <Image
-                                    src={'https://cdn.shopify.com/s/files/1/0087/6193/3920/products/DD1381200_DEOA_2_720x.jpg?v=1612816087'}/>
-                                <Details>
-                                    <ProductName><b>product: </b>NIKE</ProductName>
-                                    <ProductId><b>ID: </b>1</ProductId>
-                                    <ProductColor color={'#BA8658'}/> <ProductSize><b>Size: </b>37.5</ProductSize>
-                                </Details>
-                            </ProductDetail>
-                            <ProductDetail>
+                        {cart.products.map((product, index) => (
+                            <Product key={`${product}_${index}`}>
+                                <ProductDetail>
+                                    <Image src={product.img}/>
+                                    <Details>
+                                        <ProductName>
+                                            <b>Product:</b> {product.title}
+                                        </ProductName>
+                                        <ProductId>
+                                            <b>ID:</b> {product._id}
+                                        </ProductId>
+                                        <ProductColor color={product.color}/>
+                                        <ProductSize>
+                                            <b>Size:</b> {product.size}
+                                        </ProductSize>
+                                    </Details>
+                                </ProductDetail>
                                 <PriceDetail>
                                     <ProductAmountContainer>
                                         <Add/>
-                                        <ProductAmount>2</ProductAmount>
+                                        <ProductAmount>{product.quantity}</ProductAmount>
                                         <Remove/>
                                     </ProductAmountContainer>
-                                    <ProductPrice>$ 30</ProductPrice>
+                                    <ProductPrice>
+                                        $ {product.price * product.quantity}
+                                    </ProductPrice>
                                 </PriceDetail>
-                            </ProductDetail>
-                        </Product>
+                            </Product>
+                        ))}
                         <Hr/>
-                        <Product>
-                            <ProductDetail>
-                                <Image
-                                    src={'https://images-na.ssl-images-amazon.com/images/I/510VSJ9mWDL._SL1262_.jpg'}/>
-                                <Details>
-                                    <ProductName><b>product: </b>PlayStation 5</ProductName>
-                                    <ProductId><b>ID: </b>2</ProductId>
-                                    <ProductColor color={'black'}/> <ProductSize><b>Size: </b>M</ProductSize>
-                                </Details>
-                            </ProductDetail>
-                            <ProductDetail>
-                                <PriceDetail>
-                                    <ProductAmountContainer>
-                                        <Add/>
-                                        <ProductAmount>3</ProductAmount>
-                                        <Remove/>
-                                    </ProductAmountContainer>
-                                    <ProductPrice> $ 500</ProductPrice>
-                                </PriceDetail>
-                            </ProductDetail>
-                        </Product>
                     </Info>
                     <Summary>
                         <SummaryTitle>ORDER SUMMARY</SummaryTitle>
                         <SummaryItem>
-                            <SummaryItemText>
-                                Subtotal
-                            </SummaryItemText>
-                            <SummaryItemPrice>$ 530</SummaryItemPrice>
+                            <SummaryItemText>Subtotal</SummaryItemText>
+                            <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
                         </SummaryItem>
-                        <SummaryItem >
-                            <SummaryItemText>
-                                Estimated Shipping
-                            </SummaryItemText>
+                        <SummaryItem>
+                            <SummaryItemText>Estimated Shipping</SummaryItemText>
                             <SummaryItemPrice>$ 5.90</SummaryItemPrice>
                         </SummaryItem>
                         <SummaryItem>
-                            <SummaryItemText>
-                                Shipping Discount
-                            </SummaryItemText>
+                            <SummaryItemText>Shipping Discount</SummaryItemText>
                             <SummaryItemPrice>$ -5.90</SummaryItemPrice>
                         </SummaryItem>
                         <SummaryItem type="total">
-                            <SummaryItemText>
-                                Total
-                            </SummaryItemText>
-                            <SummaryItemPrice>$ 80</SummaryItemPrice>
+                            <SummaryItemText>Total</SummaryItemText>
+                            <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
                         </SummaryItem>
-                        <Button>CHECKOUT NOW </Button>
+                        <StripeCheckout
+                            name="Anna Shop"
+                            billingAddress
+                            shippingAddress
+                            description={`Your total is $${cart.total}`}
+                            amount={cart.total * 100}
+                            token={onToken}
+                            stripeKey={KEY}
+                        >
+                            <Button>CHECKOUT NOW</Button>
+                        </StripeCheckout>
                     </Summary>
                 </Bottom>
-
             </Wrapper>
             <Footer/>
         </Container>

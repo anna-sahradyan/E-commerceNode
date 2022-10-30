@@ -28,8 +28,8 @@ import {useLocation} from "react-router-dom";
 import {publicRequest} from "../api/apiRequest";
 import {useDispatch} from "react-redux";
 import {addProduct} from "../store/cartSlice";
-//import axios from "axios";
-//import * as api from "../api/index";
+
+
 
 const Product = () => {
     const location = useLocation();
@@ -37,7 +37,7 @@ const Product = () => {
     const [product, setProduct] = useState({});
     const [color, setColor] = useState("");
     const [size, setSize] = useState("");
-    const [quantity, setQuantity] = useState(1);
+    const [quantity, setQuantity] = useState(0);
     const dispatch = useDispatch();
     //!useEffect zone
     useEffect(() => {
@@ -53,14 +53,15 @@ const Product = () => {
     }, [id]);
     const handleQuantity = (type) => {
         if (type === "dec") {
-            quantity > 1 &&
+            quantity > 0 &&
             setQuantity(quantity - 1)
         } else {
             setQuantity(quantity + 1)
         }
     }
     const handleClick = () => {
-        dispatch(addProduct({product,quantity}))
+       dispatch(addProduct({...product, quantity, color, size }))
+
     }
     return (<>
 

@@ -12,16 +12,16 @@ const cartSlice = createSlice({
         addProduct: (state, action) => {
             state.quantity += 1;
             state.products.push(action.payload);
-            state.total += action.payload.price;
-            toast.info("increased product quantity", {
+            state.total += action.payload.price * action.payload.quantity;
+            toast.success("added a new product to cart", {
                 position: "bottom-left",
             })
             localStorage.setItem("products", JSON.stringify(state.products));
+
         },
 
     },
-
 });
 export const {addProduct} = cartSlice.actions;
-export const selectCart = state => state.cart.cart;
+// export const selectCart = state => state.cart.cart;
 export default cartSlice.reducer;
