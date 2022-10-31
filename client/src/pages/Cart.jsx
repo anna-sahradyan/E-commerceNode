@@ -36,7 +36,8 @@ import {Add, Remove} from "@mui/icons-material";
 import {useSelector} from "react-redux";
 import StripeCheckout from "react-stripe-checkout";
 
-const KEY = process.env.REACT_APP_STRIPE;
+ const KEY = process.env.REACT_APP_STRIPE;
+
 
 const Cart = () => {
     const cart = useSelector(state => state.cart);
